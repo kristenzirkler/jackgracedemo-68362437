@@ -1,0 +1,126 @@
+{% assign header_title = page.title %}
+
+<!-- Variant & Color Spreadsheet: https://docs.google.com/spreadsheets/d/1wuJLL2iXi1U8gmlH1VOJzXowa_w0Tsfug-9HqcFJVHo/edit#gid=0 -->
+
+{% assign colorNameArray = "Black	Grey	White	Charcoal	Chocolate	Latte	Burnt Orange	Orange	Gold	Lime	Mint	Teal	Kelly	Forest	Navy	Cobalt	Azure	Turquoise	Sky	Plum	Maroon	Crimson	Red	Pink" | split: "	" %}
+
+{% assign colorArray = "black	grey	white	charcoal	chocolate	latte	burntorange	orange	gold	lime	mint	teal	kelly	forest	navy	cobalt	azure	turquoise	sky	plum	maroon	crimson	red	pink" | split: "	" %}
+
+{% assign colorHexArray = "#000	#999	#fff	#545454	#493c36	#a48c68	#a66b49	#e17130	#dcc734	#9ad93c	#aecfc0	#53a58a	#3d9350	#315533	#2e354a	#2f4a7f	#628aa4	#83b2b9	#bfd1df	#533d52	#613037	#913a42	#ba4343	#cf99b9" | split: "	" %}
+
+<style>
+/* Styles for Preview */
+{% for item in colorArray %}
+/* View 01 */
+.view-01 .shoe-photo.{{ item }},
+.shoe-builder .view-01 .shoe-photo.hover-{{ item }} {
+    background-image: url({{ '01-shoe-' | append: item | append: '.png' | asset_url }});
+}
+.view-01 .saddle-photo.{{ item }},
+.shoe-builder .view-01 .saddle-photo.hover-{{ item }} {
+    background-image: url({{ '01-saddle-' | append: item | append: '.png' | asset_url }});
+}
+.view-01 .laces-photo.{{ item }},
+.shoe-builder .view-01 .laces-photo.hover-{{ item }} {
+    background-image: url({{ '01-laces-' | append: item | append: '.png' | asset_url }});
+}
+/* View 02 */
+.view-02 .shoe-photo.{{ item }},
+.shoe-builder .view-02 .shoe-photo.hover-{{ item }} {
+    background-image: url({{ '02-shoe-' | append: item | append: '.png' | asset_url }});
+}
+.view-02 .saddle-photo.{{ item }},
+.shoe-builder .view-02 .saddle-photo.hover-{{ item }} {
+    background-image: url({{ '02-saddle-' | append: item | append: '.png' | asset_url }});
+}
+.view-02 .laces-photo.{{ item }},
+.shoe-builder .view-02 .laces-photo.hover-{{ item }} {
+    background-image: url({{ '02-laces-' | append: item | append: '.png' | asset_url }});
+}
+/* color options */
+.shoe-builder .color-options div.{{ item }} {
+	background-color: {{ colorHexArray[forloop.index0] }};
+    border-color: {{ colorHexArray[forloop.index0] }};
+}
+{% endfor %}
+.shoe-builder .color-options div.white {
+    border-color: #ccc;
+}
+</style>
+<script>
+// Preload images
+$(function(){
+$.preloadImages = function() {
+  for (var i = 0; i < arguments.length; i++) {
+    $("<img />").attr("src", arguments[i]);
+  }
+}
+$.preloadImages({% for item in colorArray limit: 3 %}"{{ '01-shoe-' | append: item | append: '.png' | asset_url }}",{% endfor %}{% for item in colorArray %}"{{ '01-saddle-' | append: item | append: '.png' | asset_url }}","{{ '01-laces-' | append: item | append: '.png' | asset_url }}",{% endfor %}"");
+
+});
+</script>
+<div class="wrapper wrapper--margins wrapper__article" id="MPShoeBuilder">
+  <!--div class="rte"-->
+<div class="shoe-builder clearfix" style="visibility:hidden;opacity:0;">
+	<div class="options-ctr grid__item one-quarter medium--one-third small--one-whole">
+		<div class="mobile-options-toggle" id="mobileOptionsToggle">Customize Shoe</div>
+		<div class="options">
+			<div class="option-header">
+				<div class="meta shoe-meta" data-option-color=""><span></span></div>
+				<h2>Shoe</h2>
+			</div>
+			<div class="option color-options" data-option-type="shoe">
+				{% include 'page_color-option-list' layout: 'shoe' %}
+			</div>
+			<div class="option-header">
+				<div class="meta saddle-meta" data-option-color=""><span></span></div>
+				<h2>Saddle</h2>
+			</div>
+			<div class="option color-options" data-option-type="saddle">
+				{% include 'page_color-option-list', layout: 'saddle' %}
+			</div>
+			<div class="option-header">
+				<div class="meta laces-meta" data-option-color=""><span></span></div>
+				<h2>Laces</h2>
+			</div>
+			<div class="option color-options" data-option-type="laces">
+				{% include 'page_color-option-list', layout: 'laces' %}
+			</div>
+			<div class="option-header">
+				<div class="meta size-meta" data-option-size="8"></div>
+				<h2>Size</h2>
+			</div>
+			<div class="option size-options" data-option-type="size">
+				<select class="single-option-selector" id="shoeSizeSelect"><option value="8" selected>8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+			</div>
+		</div>
+	</div>
+	<div class="photo-ctr grid__item one-half medium--two-thirds small--one-whole">
+		<div class="photo view-01" id="ShoePreview">
+			<span class="laces-photo"></span>
+			<span class="saddle-photo"></span>
+			<span class="shoe-photo"></span>
+		</div>
+		<div class="views"><span rel="changeViews" class="selected" data-view="01">1</span><span rel="changeViews" data-view="02">2</span></div>
+	</div>
+	<div class="product-info-ctr grid__item one-quarter medium--one-whole small--one-whole">
+		<div class="shoe-details">
+			<h2><span>Customize</span> The Innovator 1.0</h2>
+			<span class="badge badge--on-sale">Pre<br>Sale</span>
+			<div class="shoe-price" id="cartPrice">$160</div>
+            <a href="#" id="AddToCartBuilder" class="btn btn--outline btn--regular btn--color">
+              <span id="AddToCartText">Add to Cart</span>
+            </a>
+            <div class="cart-options" id="cartOptions">
+				<a href="#" rel="cartToggle" id="includeShoeToggle" data-cartOption="shoe" style="display:none"><i class="fa fa-check-square-o"></i>Include Shoes <em>Black Saddles & Laces Included</em></a>
+				<a href="#" rel="cartToggle" id="includeSaddleToggle" data-cartOption="saddle" style="display:none"><i class="fa fa-check-square-o"></i>Include Additional Saddles <em>Matching Laces Included</em></a>
+				<a href="#" rel="cartToggle" id="includeLacesToggle" data-cartOption="laces" style="display:none"><i class="fa fa-check-square-o"></i>Include Additional Laces <em>Additional $7</em></a>
+			</div>
+			<div class="description">{{ page.content }}</div>
+		</div>
+
+	</div>
+</div>
+
+  <!--/div-->
+</div>

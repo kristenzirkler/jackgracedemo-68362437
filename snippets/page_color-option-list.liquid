@@ -1,0 +1,14 @@
+<ul>
+{% if layout == 'shoe' %} <!-- or layout == 'laces'-->
+	{% for item in colorArray limit: 3 %}
+		{% include 'page_color-option', color_name: colorNameArray[forloop.index0], color_name_slug: item %}
+	{% endfor %}
+
+{% else %}
+
+	{% for item in colorArray %}
+		{% include 'page_color-option', color_name: colorNameArray[forloop.index0], color_name_slug: item %}
+	{% endfor %}
+
+{% endif %}
+</ul>
