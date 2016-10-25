@@ -293,29 +293,32 @@ if (!qsLacesColor) {
         
     //console.log('addSaddle='+addSaddle+'; addLaces = '+addLaces+'; shoeVariantName = '+shoeVariantName+'; saddleVariantName = '+saddleVariantName+'; lacesVariantName = '+lacesVariantName+'; shoeVariantID = '+shoeVariantID+'; saddleVariantID = '+saddleVariantID+'; lacesVariantID = '+lacesVariantID);
     
-    // Check for bad variantID
-    if (typeof shoeVariantID === 'undefined' || typeof saddleVariantID == 'undefined' || typeof lacesVariantID == 'undefined') {
-      //console.log('shoeVariantID:'+shoeVariantID+'; saddleVariantID: '+saddleVariantID+'; lacesVariantID: '+lacesVariantID);
+    // Check for bad variantID OR no Shoe Size
+    if (shoeSize == '') {
+      // Do Nothing if there's no Shoe Size
+    } else if (typeof shoeVariantID === 'undefined' || typeof saddleVariantID == 'undefined' || typeof lacesVariantID == 'undefined') {
+      // Bad variantID ERROR - SHow alert & hide add to cart button
       alert('There was an issue with your selection. Please try again and if you still have problems, please contact us.');
       $('#AddToCartBuilder').hide();
       return;
-    }
+    } else {
+      // Otherwise update the cart button
+      if (addShoe) {
+        cartURL = cartURL + shoeVariantID+':1,';
+        variantOptionsString = 'updates['+shoeVariantID+']=1&';
+      }
+      if (addSaddle) {
+        cartURL = cartURL + saddleVariantID+':1,';
+        variantOptionsString = variantOptionsString+'updates['+saddleVariantID+']=1&';
+      }
+      if (addLaces) {
+        cartURL = cartURL + lacesVariantID+':1,';
+        variantOptionsString = variantOptionsString+'updates['+lacesVariantID+']=1&';
+      }
 
-    if (addShoe) {
-      cartURL = cartURL + shoeVariantID+':1,';
-      variantOptionsString = 'updates['+shoeVariantID+']=1&';
+      $('#AddToCartBuilder').attr('href',cartURL).removeClass('btn--disabled');
+      $('#AddToCartBuilder').attr('data-variants',variantOptionsString);
     }
-    if (addSaddle) {
-      cartURL = cartURL + saddleVariantID+':1,';
-      variantOptionsString = variantOptionsString+'updates['+saddleVariantID+']=1&';
-    }
-    if (addLaces) {
-      cartURL = cartURL + lacesVariantID+':1,';
-      variantOptionsString = variantOptionsString+'updates['+lacesVariantID+']=1&';
-    }
-
-    $('#AddToCartBuilder').attr('href',cartURL);
-    $('#AddToCartBuilder').attr('data-variants',variantOptionsString);
 
   }
 

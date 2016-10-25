@@ -87,11 +87,11 @@ $.preloadImages({% for item in colorArray limit: 3 %}"{{ '01-shoe-' | append: it
 				{% include 'page_color-option-list', layout: 'laces' %}
 			</div>
 			<div class="option-header">
-				<div class="meta size-meta" data-option-size="8"></div>
+				<div class="meta size-meta" data-option-size=""></div>
 				<h2>Size</h2>
 			</div>
 			<div class="option size-options" data-option-type="size">
-				<select class="single-option-selector" id="shoeSizeSelect"><option value="8" selected>8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+				<select class="single-option-selector" id="shoeSizeSelect"><option selected>Select An Option</option><option value="8">8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
 			</div>
 		</div>
 	</div>
@@ -108,7 +108,7 @@ $.preloadImages({% for item in colorArray limit: 3 %}"{{ '01-shoe-' | append: it
 			<h2><span>Customize</span> The Innovator 1.0</h2>
 			<span class="badge badge--on-sale">Pre<br>Sale</span>
 			<div class="shoe-price" id="cartPrice">$160</div>
-            <a href="#" id="AddToCartBuilder" class="btn btn--outline btn--regular btn--color">
+            <a href="#" id="AddToCartBuilder" class="btn btn--outline btn--regular btn--color btn--disabled">
               <span id="AddToCartText">Add to Cart</span>
             </a>
             <div class="cart-options" id="cartOptions">
