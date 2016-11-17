@@ -1,0 +1,36 @@
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% assign sold_out = true %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+
+<div class="product-saddle disabled hidden text-center" data-shoesize="{% unless variant.title contains 'Default' %}{{ variant.title | replace:'.','' }}{% endunless %}">
+  <a rel="select-saddle" class="disabled" data-variantid="{{ variant.id }}" data-variantPrice="{{ product.price | money_without_currency }}">
+    <span class="check"><i class="fa fa-square-o"></i> Add Saddle</span>
+    {% if product.featured_image %}
+      <img class="retina-img" src="{{ product.featured_image.src | img_url: 'large' }}" data-retina-src="{{ product.featured_image.src | img_url: 'grande' }}" alt="{{ product.featured_image.alt | escape }}">
+    {% else %}
+      <img src="{{ 'no-image.svg' | asset_url }}" alt="" />
+    {% endif %}
+    <span class="price-saddle">
+      <span class="color">{{ product.title | replace:'Innovator 1.0 Saddle ','' }}</span>
+      {% unless variant.title contains 'Default' %}<em class="hidden">{{ variant.title }}</em>{% endunless %}
+    {% if product.price_varies %} {{ 'products.product.on_sale_from' | t }} {% endif %}
+    {% if on_sale %}
+      <span class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
+    {% else %}
+      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+    {% endif %}
+    {{ product.price | money }}
+
+    {% if on_sale %}
+      <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+      <span class="compare-price">{{ product.compare_at_price | money }}</span>
+    {% endif %}
+    </span>
+  </a>
+</div>

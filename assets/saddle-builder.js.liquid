@@ -1,0 +1,156 @@
+$(function(){
+
+// VARIABLES ---------------------------------------------------------
+  var isDevSite = false;
+  if($('#isDevSite').length != 0) {
+    isDevSite = true;
+  }
+  var defaultShoeSize = '8';
+
+// INITIALIZE BUILDER ------------------------------------------------
+// Show 1 size of shoes, disabled
+$('div[data-shoesize="'+defaultShoeSize+'"]').removeClass('hidden');
+
+// CLICK FUNCTIONS ---------------------------------------------------
+  // Update shoe size 
+  $('#saddleSizeSelect').change(function() {
+    var shoeSize = $(this).val(),
+        shoeSize = shoeSize.replace('.','');
+
+    // Clear all previous selections
+    clearSaddleSelections();
+    // If Size Selected
+    if (shoeSize) {
+      // remove helper class to builder
+      $('.saddle-builder').removeClass('no-size-selected');
+      // Remove disabled from Saddles
+      $('.product-saddle').removeClass('disabled').addClass('hidden');
+      $('.product-saddle a').removeClass('disabled');
+      // add rel for interactivity
+      $('.product-saddle').find('a').attr('rel','select-saddle');
+      // Update variants
+      $('div[data-shoesize="'+shoeSize+'"]').removeClass('hidden');
+
+      //updateCart();
+      console.log('size selected:'+shoeSize);
+    } else {
+      // No Size Selected - Clear all selections
+      console.log('NO size selected');
+      clearSaddleSelections();
+    }
+  });
+  // Update selected saddles
+  $('[rel="select-saddle"]').click(function(event) {
+    event.preventDefault();
+
+    var saddleVariantID = $(this).attr('data-variantid'),
+        saddleVariantPrice = $(this).attr('data-variantPrice'),
+        saddleName = $(this).find('.color').html(),
+        selectedSaddleList = $('.selected-saddles').html(),
+        thisSelected = $(this).hasClass('selected'),
+        thisDisabled = $(this).hasClass('disabled');
+
+    if (!thisDisabled) {
+
+      // Remove 'none'
+      if (selectedSaddleList.indexOf('none') >= 0) {
+        selectedSaddleList = '';
+      }
+
+      if (thisSelected) {
+        // Remove item
+        // Remove Name from Selected Saddle Header List
+        selectedSaddleList = selectedSaddleList.replace('<span>'+saddleName.substring(0,15)+'</span>','');
+        $('.selected-saddles').html(selectedSaddleList);
+        // Remove selected class
+        $(this).removeClass('selected');
+        // Change check to checkmark and keep unhidden.
+        $(this).find('i').toggleClass('fa-check-square-o').toggleClass('fa-square-o');
+
+        // Update Cart
+        updateCart('remove',saddleVariantID,saddleVariantPrice);
+      } else {
+        // Add Name to Selected Saddle Header List
+        selectedSaddleList = selectedSaddleList + '<span>'+saddleName.substring(0,15)+'</span>';
+        $('.selected-saddles').html(selectedSaddleList);
+        // Add selected class
+        $(this).addClass('selected');
+        // Change check to checkmark and keep unhidden.
+        $(this).find('i').toggleClass('fa-check-square-o').toggleClass('fa-square-o');
+
+        // Update Cart
+        updateCart('add',saddleVariantID,saddleVariantPrice);
+
+      }
+    }
+  });
+
+  // Post items to cart & redirect page
+  $('#AddToCartBuilder').click(function(event) {
+    event.preventDefault();
+    var variantString = $(this).attr('data-variants');
+    $.post('/cart/update.js', variantString, function(data){
+      window.location.href = '/cart';
+    },'json');
+  });
+
+// FUNCTIONS ---------------------------------------------------------
+
+  // Clear All Selections
+  function clearSaddleSelections() {
+    // disable all saddles & hide them
+    $('.product-saddle').addClass('disabled').addClass('hidden');
+    $('.product-saddle a').addClass('disabled');
+    // show one size but keep disabled
+    $('div[data-shoesize="'+defaultShoeSize+'"]').removeClass('hidden');
+    // remove rel for interactivity
+    $('.product-saddle').find('a').attr('rel','');
+    // add helper class to builder
+    $('.saddle-builder').addClass('no-size-selected');
+
+  }
+  // Update Cart Options & Price
+  function updateCart(type,variantID,variantPrice) {
+    var cartPrice = $('#cartPrice').text(),
+        cartPrice = cartPrice.replace('$',''),
+        cartURL =  $('#AddToCartBuilder').attr('href'),
+        variantOptionsString = $('#AddToCartBuilder').attr('data-variants');
+
+    if (type == 'add') {
+      // Add price to total
+      cartPrice = +cartPrice + +variantPrice;
+      // Add total to text
+      $('#cartPrice').text('$'+cartPrice);
+      // Add variant to button
+      cartURL = cartURL + variantID + ':1,';
+      variantOptionsString = variantOptionsString+'updates['+variantID+']=1&';
+
+      $('#AddToCartBuilder').attr('href',cartURL).removeClass('btn--disabled');
+      $('#AddToCartBuilder').attr('data-variants',variantOptionsString);
+    } else {
+      // Remove price to total
+      cartPrice = +cartPrice - +variantPrice;
+      // Add total to text
+      $('#cartPrice').text('$'+cartPrice);
+      // remove variant from button
+      cartURL = cartURL.replace(variantID + ':1,','');
+      variantOptionsString = variantOptionsString.replace('updates['+variantID+']=1&','');
+
+      $('#AddToCartBuilder').attr('href',cartURL).removeClass('btn--disabled');
+      $('#AddToCartBuilder').attr('data-variants',variantOptionsString);
+
+    }
+  }
+
+  // Get params in url
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+});

@@ -8,6 +8,9 @@
       <img src="{{ collection.image.src | img_url: '1024x1024' }}" alt="{{ collection.image.alt }}" />
     </div>
   {% endif %}
+  {% if collection.title contains 'Saddle' %}
+  <div class="multi-saddle"><a href="/collections/multiple-saddles">Want to Buy Mutliple Saddles?</a></div>
+  {% endif %}
 
   {% paginate collection.products by 48 %}
 

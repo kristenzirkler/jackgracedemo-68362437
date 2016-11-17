@@ -19,6 +19,7 @@ $link: $accent-color;
 $border-color: $gray-light;
 
 $error: #d92424;
+$highlight: #fffa99;
 
 $page-size: 960px;
 
@@ -78,7 +79,32 @@ $mobile-side-space: 30px;
 }
 
 }
-
+// Cart Alert
+$cart-alert-height: 40px;
+.cart-add-alert-body {
+  margin-top: $cart-alert-height;
+}
+.cart-add-alert {
+  background: $highlight;
+  line-height: $cart-alert-height;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  text-align: center;
+  z-index: 10000;
+  a {
+    display: inline-block;
+    background-color: $black;
+    line-height: $cart-alert-height - 10px;
+    margin: 5px 0 5px 5px;
+    padding: 0 8px;
+    color: $white;
+    font-weight: bold;
+    cursor: pointer;
+    &:hover {
+      background-color: $gray;
+    }
+  }
+}
 
 
 // Shoe Builder ------------------------------------------------------

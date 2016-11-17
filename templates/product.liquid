@@ -53,7 +53,14 @@
         <link itemprop="availability" href="http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}">
 
         <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
-
+          
+          {% for collection in product.collections %}
+            {% assign this_collection = collection.url %}
+            {% if this_collection != '/collections/all' %}
+              <input type="hidden" name="return_to" value="{{ collection.url }}?cartAdd={{ collection.title }}" />
+              {% break %}
+            {% endif %}
+          {% endfor %}
           {% if product.compare_at_price_max > product.price %}
             <span id="ComparePriceA11y" class="visually-hidden">{{ 'products.product.sale_price' | t }}</span>
           {% else %}

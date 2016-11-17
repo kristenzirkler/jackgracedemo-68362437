@@ -1,0 +1,61 @@
+{{ 'saddle-builder.scss.css' | asset_url | stylesheet_tag }}
+<!-- Select Size -->
+<!-- All varients need to be the size selected -->
+<!-- add sale price -->
+<!-- Add to cart button on all that leaves you on page and shows 'checkout' alert -->
+
+<div class="saddle-builder no-size-selected">
+  <div class="saddle-builder-header">
+    <div class="close"><a href="/collections/saddles"><i class="fa fa-close"></i></a></div>
+      <div class="option size-options" data-option-type="size">
+        <h2>1. Select Shoe Size</h2>
+        <select class="single-option-selector" id="saddleSizeSelect"><option value="" selected>Size...</option><option value="8">8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+      </div>
+      <div class="option saddle-options" data-option-type="saddles">
+        <h2>2. Select Saddles</h2>
+        <div class="selected-saddles"><span class="none">None</span></div>
+      </div>
+      <div class="option">
+        <h2>3. Add to Cart - <span class="cart-price" id="cartPrice">$0.00</span></h2>
+        <a href="https://www.jackgraceusa.com/cart/" id="AddToCartBuilder" class="btn btn--outline btn--regular btn--color btn--disabled" data-variants="">
+          <span id="AddToCartText">Add to Cart</span>
+        </a>
+      </div>
+  </div>
+  <div class="content-wrap">
+    {% if collection.image %}
+      <div class="collection-image">
+        <img src="{{ collection.image.src | img_url: '1024x1024' }}" alt="{{ collection.image.alt }}" />
+      </div>
+    {% endif %}
+
+  {% paginate collection.products by 50 %}
+
+  <form action="/cart" method="post">
+    {% if collection.products_count > 0 %}
+
+      <div class="collection-list-saddle">
+
+        {% for product in collection.products %}
+          {% if product.available %}
+            {% for variant in product.variants %}
+              {% if variant.available %}
+                  {% include 'product-grid-item-saddle' %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    
+    {% else %}
+      <p>There are no products in this view.</p>
+    {% endif %}
+
+  </form>
+
+  {% endpaginate %}
+  </div>
+</div>
+
+
+{{ 'saddle-builder.js' | asset_url | script_tag }}
