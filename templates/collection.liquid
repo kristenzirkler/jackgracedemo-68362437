@@ -9,7 +9,10 @@
     </div>
   {% endif %}
   {% if collection.title contains 'Saddle' %}
-  <div class="multi-saddle"><a href="/collections/multiple-saddles">Want to Buy Multiple Saddles?</a></div>
+  <div class="multi-button"><a href="/collections/multiple-saddles">Want to Buy Multiple Saddles? <span>Click Here</span></a></div>
+  {% endif %}
+  {% if collection.title contains 'Lace' %}
+  <div class="multi-button"><a href="/collections/multiple-laces">Want to Buy Multiple Laces? <span>Click Here</span></a></div>
   {% endif %}
 
   {% paginate collection.products by 48 %}

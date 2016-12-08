@@ -1,0 +1,51 @@
+{{ 'lace-builder.scss.css' | asset_url | stylesheet_tag }}
+<div class="lace-builder">
+  <div class="lace-builder-header">
+    <div class="close"><a href="/collections/laces"><i class="fa fa-close"></i></a></div>
+      <div class="option lace-options" data-option-type="laces">
+        <h2>1. Select Laces</h2>
+        <div class="selected-laces"><span class="none">None</span></div>
+      </div>
+      <div class="option">
+        <h2>2. Add to Cart - <span class="cart-price" id="cartPrice">$0.00</span></h2>
+        <a href="https://www.jackgraceusa.com/cart/" id="AddToCartBuilder" class="btn btn--outline btn--regular btn--color btn--disabled" data-variants="">
+          <span id="AddToCartText">Add to Cart</span>
+        </a>
+      </div>
+  </div>
+  <div class="content-wrap">
+    {% if collection.image %}
+      <div class="collection-image">
+        <img src="{{ collection.image.src | img_url: '1024x1024' }}" alt="{{ collection.image.alt }}" />
+      </div>
+    {% endif %}
+
+  {% paginate collection.products by 50 %}
+
+  <form action="/cart" method="post">
+    {% if collection.products_count > 0 %}
+
+      <div class="collection-list-lace">
+
+        {% for product in collection.products %}
+          {% if product.available %}
+            {% for variant in product.variants %}
+              {% if variant.available %}
+                  {% include 'product-grid-item-lace' %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    
+    {% else %}
+      <p>There are no products in this view.</p>
+    {% endif %}
+
+  </form>
+
+  {% endpaginate %}
+  </div>
+</div>
+
+{{ 'lace-builder.js' | asset_url | script_tag }}

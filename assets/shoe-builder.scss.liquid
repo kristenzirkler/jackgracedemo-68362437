@@ -299,6 +299,27 @@ $cart-alert-height: 40px;
       font-style: normal;
     }
   }
+  #AddToCartBuilder {
+    position: relative;
+    .alert {
+      display: none;
+      position: absolute;
+      line-height: 20px;
+      padding: 0 10px;
+      bottom: -22px;
+      font-size: 12px;
+      left: -2px;
+      right: -2px;
+      background: $highlight;
+      font-family: $font-family;
+    }
+    &.btn--disabled {
+      margin-bottom: 20px;
+      .alert {
+        display: block;
+      }
+    }
+  }
 }
 
 // Responsive
@@ -320,6 +341,10 @@ $cart-alert-height: 40px;
     h2 {
       border-top: 1px solid $border-color;
     }
+  }
+  .view-01 { overflow: hidden; }
+  .view-01 .laces-photo, .view-01 .shoe-photo, .view-01 .saddle-photo {
+    margin-top: -50px;
   }
 
 }

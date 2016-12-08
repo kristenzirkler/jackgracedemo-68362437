@@ -1,28 +1,50 @@
 {% assign header_title = page.title %}
-
 <!-- Variant & Color Spreadsheet: https://docs.google.com/spreadsheets/d/1wuJLL2iXi1U8gmlH1VOJzXowa_w0Tsfug-9HqcFJVHo/edit#gid=0 -->
 
-{% assign colorNameArray = "Black	Grey	White	Charcoal	Chocolate	Latte	Burnt Orange	Orange	Canary	Lime	Mint	Teal	Kelly	Forest	Navy	Cobalt	Azure	Turquoise	Sky	Plum	Maroon	Crimson	Red	Pink" | split: "	" %}
+{% assign colorNameArray = "Black	Grey	White	Charcoal	Chocolate	Tan	Burnt Orange	Orange	Gold	Lime	Mint	Teal	Kelly	Forest	Navy	Cobalt	Azure	Turquoise	Sky	Plum	Maroon	Crimson	Red	Pink" | split: "	" %}
 
-{% assign colorArray = "black	grey	white	charcoal	chocolate	latte	burntorange	orange	canary	lime	mint	teal	kelly	forest	navy	cobalt	azure	turquoise	sky	plum	maroon	crimson	red	pink" | split: "	" %}
+{% assign colorArray = "black	grey	white	charcoal	chocolate	tan	burntorange	orange	gold	lime	mint	teal	kelly	forest	navy	cobalt	azure	turquoise	sky	plum	maroon	crimson	red	pink" | split: "	" %}
 
 {% assign colorHexArray = "#000	#999	#fff	#545454	#493c36	#a48c68	#a66b49	#e17130	#dcc734	#9ad93c	#aecfc0	#53a58a	#3d9350	#315533	#2e354a	#2f4a7f	#628aa4	#83b2b9	#bfd1df	#533d52	#613037	#913a42	#ba4343	#cf99b9" | split: "	" %}
 
 <style>
 /* Styles for Preview */
+/* View 00 - Shoe Bottom */
+.view-00 .shoe-photo {
+    background-image: url({{ '00-shoe-bottom.png' | asset_url }});
+}
+.view-00 .saddle-photo,
+.view-00 .laces-photo {
+    background-image: none;
+}
 {% for item in colorArray %}
-.shoe-photo.{{ item }},
-.shoe-builder .shoe-photo.hover-{{ item }} {
+/* View 01 */
+.view-01 .shoe-photo.{{ item }},
+.shoe-builder .view-01 .shoe-photo.hover-{{ item }} {
     background-image: url({{ '01-shoe-' | append: item | append: '.png' | asset_url }});
 }
-.saddle-photo.{{ item }},
-.shoe-builder .saddle-photo.hover-{{ item }} {
+.view-01 .saddle-photo.{{ item }},
+.shoe-builder .view-01 .saddle-photo.hover-{{ item }} {
     background-image: url({{ '01-saddle-' | append: item | append: '.png' | asset_url }});
 }
-.laces-photo.{{ item }},
-.shoe-builder .laces-photo.hover-{{ item }} {
+.view-01 .laces-photo.{{ item }},
+.shoe-builder .view-01 .laces-photo.hover-{{ item }} {
     background-image: url({{ '01-laces-' | append: item | append: '.png' | asset_url }});
 }
+/* View 02 */
+.view-02 .shoe-photo.{{ item }},
+.shoe-builder .view-02 .shoe-photo.hover-{{ item }} {
+    background-image: url({{ '02-shoe-' | append: item | append: '.png' | asset_url }});
+}
+.view-02 .saddle-photo.{{ item }},
+.shoe-builder .view-02 .saddle-photo.hover-{{ item }} {
+    background-image: url({{ '02-saddle-' | append: item | append: '.png' | asset_url }});
+}
+.view-02 .laces-photo.{{ item }},
+.shoe-builder .view-02 .laces-photo.hover-{{ item }} {
+    background-image: url({{ '02-laces-' | append: item | append: '.png' | asset_url }});
+}
+/* color options */
 .shoe-builder .color-options div.{{ item }} {
 	background-color: {{ colorHexArray[forloop.index0] }};
     border-color: {{ colorHexArray[forloop.index0] }};
@@ -46,8 +68,7 @@ $.preloadImages({% for item in colorArray limit: 3 %}"{{ '01-shoe-' | append: it
 </script>
 <div class="wrapper wrapper--margins wrapper__article" id="MPShoeBuilder">
   <!--div class="rte"-->
-<div id="isDevSite" data-option="true"></div>
-<div class="shoe-builder clearfix">
+<div class="shoe-builder clearfix" style="visibility:hidden;opacity:0;">
 	<div class="options-ctr grid__item one-quarter medium--one-third small--one-whole">
 		<div class="mobile-options-toggle" id="mobileOptionsToggle">Customize Shoe</div>
 		<div class="options">
@@ -73,37 +94,35 @@ $.preloadImages({% for item in colorArray limit: 3 %}"{{ '01-shoe-' | append: it
 				{% include 'page_color-option-list', layout: 'laces' %}
 			</div>
 			<div class="option-header">
-				<div class="meta size-meta" data-option-size="8"></div>
+				<div class="meta size-meta" data-option-size=""></div>
 				<h2>Size</h2>
 			</div>
 			<div class="option size-options" data-option-type="size">
-				<select class="single-option-selector" id="shoeSizeSelect"><option value="8" selected>8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+				<select class="single-option-selector" id="shoeSizeSelect"><option selected>Select Shoe Size...</option><option value="8">8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
 			</div>
 		</div>
 	</div>
 	<div class="photo-ctr grid__item one-half medium--two-thirds small--one-whole">
-		<!--div class="photo-view" id="ShoeView">
-			<span class="selected" data-view="view-1">View 1</span>
-			<span data-view="view-2">View 2</span>
-		</div-->
-		<div class="photo" id="ShoePreview">
+		<div class="photo view-01" id="ShoePreview">
 			<span class="laces-photo"></span>
 			<span class="saddle-photo"></span>
 			<span class="shoe-photo"></span>
 		</div>
+		<div class="views"><span rel="changeViews" class="selected" data-view="01">1</span><span rel="changeViews" data-view="02">2</span><span rel="changeViews" data-view="00">0</span></div>
 	</div>
 	<div class="product-info-ctr grid__item one-quarter medium--one-whole small--one-whole">
 		<div class="shoe-details">
 			<h2><span>Customize</span> The Innovator 1.0</h2>
 			<span class="badge badge--on-sale">Pre<br>Sale</span>
-			<div class="shoe-price" id="cartPrice">$160</div>
-            <a href="#" id="AddToCart" class="btn btn--outline btn--regular btn--color">
+			<div class="shoe-price" id="cartPrice">-</div>
+            <a href="#" id="AddToCartBuilder" class="btn btn--outline btn--regular btn--color btn--disabled">
               <span id="AddToCartText">Add to Cart</span>
+              <span class="alert">Please Select Shoe Size</span>
             </a>
             <div class="cart-options" id="cartOptions">
-				<a href="#" rel="cartToggle" id="includeShoeToggle" data-cartOption="shoes"><i class="fa fa-check-square-o"></i> &nbsp;Include Shoes In Cart <em>Cobalt Saddles & Laces Included</em></a>
-				<!--a href="#" rel="cartToggle" data-cartOption="saddles"><i class="fa fa-check-square-o"></i> &nbsp;Include Additional Saddles In Cart <em>Matching Laces Included</em></a>
-				<a  href="#" rel="cartToggle" data-cartOption="laces"><i class="fa fa-check-square-o"></i> &nbsp;Include Additional Laces In Cart <em>Additional $7</em></a-->
+				<a href="#" rel="cartToggle" id="includeShoeToggle" data-cartOption="shoe" style="display:none"><i class="fa fa-check-square-o"></i>Include Shoes <em>Black Saddles & Laces Included</em></a>
+				<a href="#" rel="cartToggle" id="includeSaddleToggle" data-cartOption="saddle" style="display:none"><i class="fa fa-check-square-o"></i>Include Additional Saddles <em>Matching Laces Included</em></a>
+				<a href="#" rel="cartToggle" id="includeLacesToggle" data-cartOption="laces" style="display:none"><i class="fa fa-check-square-o"></i>Include Additional Laces <em>Additional ${{ settings.shoe_builder_laces_price }}</em></a>
 			</div>
 			<div class="description">{{ page.content }}</div>
 		</div>

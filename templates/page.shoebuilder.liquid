@@ -1,5 +1,4 @@
 {% assign header_title = page.title %}
-
 <!-- Variant & Color Spreadsheet: https://docs.google.com/spreadsheets/d/1wuJLL2iXi1U8gmlH1VOJzXowa_w0Tsfug-9HqcFJVHo/edit#gid=0 -->
 
 {% assign colorNameArray = "Black	Grey	White	Charcoal	Chocolate	Tan	Burnt Orange	Orange	Gold	Lime	Mint	Teal	Kelly	Forest	Navy	Cobalt	Azure	Turquoise	Sky	Plum	Maroon	Crimson	Red	Pink" | split: "	" %}
@@ -99,7 +98,7 @@ $.preloadImages({% for item in colorArray limit: 3 %}"{{ '01-shoe-' | append: it
 				<h2>Size</h2>
 			</div>
 			<div class="option size-options" data-option-type="size">
-				<select class="single-option-selector" id="shoeSizeSelect"><option selected>Select An Option</option><option value="8">8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
+				<select class="single-option-selector" id="shoeSizeSelect"><option selected>Select Shoe Size...</option><option value="8">8</option><option value="8.5">8.5</option><option value="9">9</option><option value="9.5">9.5</option><option value="10">10</option><option value="10.5">10.5</option><option value="11">11</option><option value="11.5">11.5</option><option value="12">12</option><option value="13">13</option><option value="14">14</option></select>
 			</div>
 		</div>
 	</div>
@@ -115,14 +114,15 @@ $.preloadImages({% for item in colorArray limit: 3 %}"{{ '01-shoe-' | append: it
 		<div class="shoe-details">
 			<h2><span>Customize</span> The Innovator 1.0</h2>
 			<span class="badge badge--on-sale">Pre<br>Sale</span>
-			<div class="shoe-price" id="cartPrice">$160</div>
+			<div class="shoe-price" id="cartPrice">-</div>
             <a href="#" id="AddToCartBuilder" class="btn btn--outline btn--regular btn--color btn--disabled">
               <span id="AddToCartText">Add to Cart</span>
+              <span class="alert">Please Select Shoe Size</span>
             </a>
             <div class="cart-options" id="cartOptions">
 				<a href="#" rel="cartToggle" id="includeShoeToggle" data-cartOption="shoe" style="display:none"><i class="fa fa-check-square-o"></i>Include Shoes <em>Black Saddles & Laces Included</em></a>
 				<a href="#" rel="cartToggle" id="includeSaddleToggle" data-cartOption="saddle" style="display:none"><i class="fa fa-check-square-o"></i>Include Additional Saddles <em>Matching Laces Included</em></a>
-				<a href="#" rel="cartToggle" id="includeLacesToggle" data-cartOption="laces" style="display:none"><i class="fa fa-check-square-o"></i>Include Additional Laces <em>Additional $5</em></a>
+				<a href="#" rel="cartToggle" id="includeLacesToggle" data-cartOption="laces" style="display:none"><i class="fa fa-check-square-o"></i>Include Additional Laces <em>Additional ${{ settings.shoe_builder_laces_price }}</em></a>
 			</div>
 			<div class="description">{{ page.content }}</div>
 		</div>

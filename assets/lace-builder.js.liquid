@@ -1,0 +1,110 @@
+$(function(){
+
+// VARIABLES ---------------------------------------------------------
+
+// INITIALIZE BUILDER ------------------------------------------------
+
+// CLICK FUNCTIONS ---------------------------------------------------
+  
+  // Update selected laces
+  $('[rel="select-lace"]').click(function(event) {
+    event.preventDefault();
+
+    var laceVariantID = $(this).attr('data-variantid'),
+        laceVariantPrice = $(this).attr('data-variantPrice'),
+        laceName = $(this).find('.color').html(),
+        selectedLaceList = $('.selected-laces').html(),
+        thisSelected = $(this).hasClass('selected'),
+        thisDisabled = $(this).hasClass('disabled');
+
+    if (!thisDisabled) {
+
+      // Remove 'none'
+      if (selectedLaceList.indexOf('none') >= 0) {
+        selectedLaceList = '';
+      }
+
+      if (thisSelected) {
+        // Remove item
+        // Remove Name from Selected Laces Header List
+        selectedLaceList = selectedLaceList.replace('<span>'+laceName.substring(0,15)+'</span>','');
+        $('.selected-laces').html(selectedLaceList);
+        // Remove selected class
+        $(this).removeClass('selected');
+        // Change check to checkmark and keep unhidden.
+        $(this).find('i').toggleClass('fa-check-square-o').toggleClass('fa-square-o');
+
+        // Update Cart
+        updateCart('remove',laceVariantID,laceVariantPrice);
+      } else {
+        // Add Name to Selected Laces Header List
+        selectedLaceList = selectedLaceList + '<span>'+laceName.substring(0,15)+'</span>';
+        $('.selected-laces').html(selectedLaceList);
+        // Add selected class
+        $(this).addClass('selected');
+        // Change check to checkmark and keep unhidden.
+        $(this).find('i').toggleClass('fa-check-square-o').toggleClass('fa-square-o');
+
+        // Update Cart
+        updateCart('add',laceVariantID,laceVariantPrice);
+
+      }
+    }
+  });
+
+  // Post items to cart & redirect page
+  $('#AddToCartBuilder').click(function(event) {
+    event.preventDefault();
+    var variantString = $(this).attr('data-variants');
+    $.post('/cart/update.js', variantString, function(data){
+      window.location.href = '/cart';
+    },'json');
+  });
+
+// FUNCTIONS ---------------------------------------------------------
+
+  // Update Cart Options & Price
+  function updateCart(type,variantID,variantPrice) {
+    var cartPrice = $('#cartPrice').text(),
+        cartPrice = cartPrice.replace('$',''),
+        cartURL =  $('#AddToCartBuilder').attr('href'),
+        variantOptionsString = $('#AddToCartBuilder').attr('data-variants');
+
+    if (type == 'add') {
+      // Add price to total
+      cartPrice = +cartPrice + +variantPrice;
+      // Add total to text
+      $('#cartPrice').text('$'+cartPrice);
+      // Add variant to button
+      cartURL = cartURL + variantID + ':1,';
+      variantOptionsString = variantOptionsString+'updates['+variantID+']=1&';
+
+      $('#AddToCartBuilder').attr('href',cartURL).removeClass('btn--disabled');
+      $('#AddToCartBuilder').attr('data-variants',variantOptionsString);
+    } else {
+      // Remove price to total
+      cartPrice = +cartPrice - +variantPrice;
+      // Add total to text
+      $('#cartPrice').text('$'+cartPrice);
+      // remove variant from button
+      cartURL = cartURL.replace(variantID + ':1,','');
+      variantOptionsString = variantOptionsString.replace('updates['+variantID+']=1&','');
+
+      $('#AddToCartBuilder').attr('href',cartURL).removeClass('btn--disabled');
+      $('#AddToCartBuilder').attr('data-variants',variantOptionsString);
+
+    }
+  }
+
+  // Get params in url
+  function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
+
+});

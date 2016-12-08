@@ -1,0 +1,265 @@
+$body-background: #fff;
+
+$page-background: $body-background;
+
+$main-color: #000;
+$accent-color: #0070d9; //blue
+
+$white: #fff;
+$gray-lightest: #f5f4f2;
+$gray-light: #d4d4d2;
+$gray: #8d9095;
+$black: #000;
+
+$font-family: 'Raleway', Arial, 'Lucida Grande', sans-serif;
+$accent-font: Montserrat, Arial, 'Lucida Grande', sans-serif;;
+
+$font-color: $black;
+$link: $accent-color;
+$border-color: $gray-light;
+
+$error: #d92424;
+$highlight: #fffa99;
+
+$page-size: 960px;
+
+$desktop-side-space: 20px;
+$mobile-side-space: 30px;
+
+@mixin transition($transitions) {
+    -webkit-transition: $transitions;
+    -moz-transition: $transitions;
+    -o-transition: $transitions;
+    transition: $transitions;
+}
+@mixin transition-delay($transitions) {
+    -webkit-transition-delay: $transitions;
+    -moz-transition-delay: $transitions;
+    -o-transition-delay: $transitions;
+    transition-delay: $transitions;
+}
+@mixin transform($variables) {
+  -webkit-transform: $variables;
+  -moz-transform:    $variables;
+  -ms-transform:     $variables;
+  -o-transform:      $variables;
+  transform:         $variables;
+}
+@mixin gradient($start,$start-opacity,$stop,$stop-opacity) {
+  background: $start;
+  background: -moz-linear-gradient(top,  rgba($start,$start-opacity) 0%, rgba($stop,$stop-opacity) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba($start,$start-opacity)), color-stop(100%,rgba($stop,$stop-opacity))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgba($start,$start-opacity) 0%,rgba($stop,$stop-opacity) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgba($start,$start-opacity) 0%,rgba($stop,$stop-opacity) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgba($start,$start-opacity) 0%,rgba($stop,$stop-opacity) 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgba($start,$start-opacity) 0%,rgba($stop,$stop-opacity) 100%); /* W3C */
+  //filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+}
+.lace-builder {
+  background: $gray-lightest;
+  @include transition(all .5s);
+  &.no-size-selected {
+    background: $black;
+    .option {
+      opacity: .3;
+    }
+    .size-options {
+      opacity: 1;
+      h2 {
+        font-size: 22px;
+      }
+    }
+    .lace-builder-header {
+      height: 140px;
+    }
+    .content-wrap {
+      opacity: .3;
+    }
+  }
+}
+// Header Styles
+.lace-builder-header {
+  z-index: 9999;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: $white;
+  border-bottom: $gray;
+  height: 100px;
+  padding: 15px 5px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba($black,.15);
+  @include transition(all .3s);
+  a {
+    color: $black;
+  }
+  .option {
+    opacity: 1;
+    float: left;
+    margin-right: 5px;
+    @include transition(all .5s);
+  }
+  h2 {
+    display: none;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-family: $accent-font;
+    @include transition(all .5s);
+  }
+  select {
+    width: 100%;
+    outline: none;
+  }
+  .close {
+    float: right;
+    margin: 0 20px;
+    line-height: 75px;
+    font-size: 30px;
+  }
+  .btn.btn--outline.btn--color {
+    display: block;
+    width: 100%;
+    color: $black;
+    border-color: $black;
+    text-align: center;
+    &:hover {
+      color: $white;
+      background: $black;
+    }
+    &.btn--disabled {
+      color: $gray;
+      border-color: $gray;
+      background: $gray-lightest;
+    }
+  }
+  .selected-laces {
+    display: none;
+    border: 1px solid #cacaca;
+    max-width: 100%;
+    padding: 8px 10px;
+    border-radius: 2px;
+    height: 50px;
+    font-size: 16px;
+    color: #343434;
+    background: transparent;
+    max-width: 400px;
+    overflow: hidden;
+    span {
+      margin: 5px 2px;
+      line-height: 24px;
+      font-size: 12px;
+      display: inline-block;
+      background: $black;
+      color: $white;
+      border-radius: 3px;
+      padding: 0 5px;
+    }
+    .none {
+      font-style: italic;
+      color: $gray;
+      background: $gray-lightest;
+    }
+  }
+}
+// Content Styles
+.lace-builder {
+  .content-wrap {
+    opacity: 1;
+    padding-top: 110px;
+    overflow: hidden;
+    padding-right: .5vw;
+    padding-left: .5vw;
+    @include transition(all 1s);
+  }
+  .product-lace {
+    width: 48.5vw;
+    margin: .5vw;
+    float: left;
+    .check {
+      opacity: 0;
+      display: block;
+    }
+    img {
+      padding: 10px;
+    }
+    a {
+      height: 48.5vw;
+      @include transition(all .5s);
+      display: block;
+      overflow: hidden;
+      border: 3px solid $white;
+      background: $white;
+      color: $black;
+      position: relative;
+      &:hover, &.selected {
+        border-color: $black;
+        .check {
+          opacity: 1;
+        }
+      }
+    }
+    &.disabled {
+      a:hover {
+        border-color: $white;
+        .check {
+          opacity: 0;
+        }
+      }
+    }
+  }
+  .price-laces {
+    display: block;
+    padding: 5px;
+    font-size: 12px;
+    line-height: 14px;
+    font-family: $accent-font;
+    text-transform: uppercase;
+  }
+  .compare-price {
+    text-decoration: line-through;
+    color: $gray;
+    display: none;
+  }
+}
+// Responsive
+@media all and (min-width: 420px) {
+// Tablet & Up
+.lace-builder-header {
+  padding: 15px;
+  h2 {
+    display: block;
+  }
+  .selected-laces {
+    display: block;
+  }
+  .option {
+    margin-right: 20px;
+  }
+}
+.lace-builder {
+  .product-lace {
+    width: 23.7vw;
+    a {
+      height: 23.7vw;
+    }
+  }
+
+}
+// End Tablet & Up
+}
+
+@media all and (min-width: 769px) {
+// Desktop & Up
+.lace-builder {
+  .product-lace {
+    width: 18.8vw;
+    a {
+      height: 18.8vw;
+    }
+  }
+
+}
+// End Desktop & Up
+}
+
+@media all and (min-width: 900px) {
+}
