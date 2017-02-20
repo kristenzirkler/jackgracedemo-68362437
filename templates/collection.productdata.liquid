@@ -1,0 +1,58 @@
+<!-- Used to create data for shoe builder -->
+{% assign data_view = 'saddles-variants' %}
+
+<style>
+.site-header, 
+.social-footer,
+.site-footer {
+  display: none;
+}
+</style>
+{% paginate collection.products by 50 %}
+
+{% if data_view == 'saddle-variants' %}
+<!-- Saddles -->
+<h2>Saddles</h2>
+<br>
+var saddleVariantArray = {
+<br>
+{% elsif data_view == 'laces-variants' %}
+<!-- LACES -->
+<h2>Laces</h2>
+<br>
+var lacesVariantArray = {
+<br>
+{% endif %}
+
+{% if collection.products_count > 0 %}
+  {% for product in collection.products %}
+    {% if product.available %}
+      {% for variant in product.variants %}
+        {% if variant.available %}
+
+{% if data_view == 'saddles-variants' %}
+saddle{{ variant.option1 | downcase | remove: '.' }}: '{{ variant.id }}',
+
+{% elsif data_view == 'laces-variants' %}
+laces{{ variant.option1 | downcase | remove:' ' }}{% 
+if variant.option2 contains '32"' 
+%}small{%
+elsif variant.option2 contains '34"' 
+%}medium{% 
+elsif variant.option2 contains '37"' 
+%}large{% 
+endif 
+%}: '{{ variant.id }}',
+{% endif %}
+
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+<br>
+}
+{% else %}
+  <p>There are no products in this view.</p>
+{% endif %}
+
+{% endpaginate %}
