@@ -31,7 +31,12 @@
   {% endif %}
   {{ 'shopstorm-apps.scss.css' | asset_url | stylesheet_tag }} 
   {{ 'shoe-builder.scss.css' | asset_url | stylesheet_tag }}
+
+  {% if template contains '-dev' %}
+  {{ 'shoe-builder-dev.js' | asset_url | script_tag }}
+  {% else %}
   {{ 'shoe-builder.js' | asset_url | script_tag }}
+  {% endif %}
   <meta name="google-site-verification" content="AtsDuSF0EtzzwUQ5HLZ6Ud9zla1hG35int_afGpFKf4" />
 </head>
 <body id="{% comment %}<h1 class="p25">{{ page_title | handle }}</h1>{% endcomment %}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
