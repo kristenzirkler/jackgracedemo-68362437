@@ -26,7 +26,7 @@
 
 	<div class="home-features">
 
-		<h2 class="home-section-title">{{ 'homepage.titles.features' | t }}</h2>
+		{% if homepage.titles.features %}<h2 class="home-section-title">{{ 'homepage.titles.features' | t }}</h2>{% endif %}
 
 		<ul class="features-list grid grid-margins">
 

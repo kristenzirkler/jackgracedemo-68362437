@@ -4,12 +4,12 @@
     {% if settings.home-page-select == blank or pages[settings.home-page-select].empty? %}
     
       <!-- onboarding -->
-      <h2 class="home-section-title">{{ 'homepage.onboarding.section_title' | t }}</h2>
+      {% if homepage.onboarding.section_title %}<h2 class="home-section-title">{{ 'homepage.onboarding.section_title' | t }}</h2><!--test-->{% endif %}
       <p>{{ 'homepage.onboarding.section_text_html' | t }}</p>
 
     {% else %}
 
-      <h2 class="home-section-title">{{ pages[settings.home-page-select].title }}</h2>
+      {% if pages[settings.home-page-select].title %}<h2 class="home-section-title">{{ pages[settings.home-page-select].title }}</h2><!--test-->{% endif %}
       
       <div class="rte">
         {{ pages[settings.home-page-select].content }}
